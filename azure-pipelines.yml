@@ -20,18 +20,19 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '**/*test/*.csproj'
-    arguments: 'configuration: ''$(buildConfiguration)'''
-    testRunTitle: 'Test'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '**/*test/*.csproj'
+    arguments: 'configuration: ''$(buildConfiguration)'''
+    testRunTitle: 'Test'
 
 
 
